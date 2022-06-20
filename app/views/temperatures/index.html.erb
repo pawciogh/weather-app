@@ -1,0 +1,23 @@
+<h1>How hot is it today?</h1>
+
+<% if params[:t] %>
+  <% temp_today = params[:t].to_i %>
+  <h2>It's going to be <%= weather_message(temp_today) %> today.</h2>
+<% end %>
+  
+<% if @temperature.present? %>
+  <div>Type your postcode</div><br>
+  <%= form_with url: "/fetch_temp", method: :post do |form| %>
+  <%= form.text_field :postcode, required: true %>
+  <%= form.submit 'Send' %>
+
+  <br><br>
+  <% if admin? %>
+      <%= link_to "Edit the temperatures", edit_temperature_path(@temperature) %>
+  <% end %>
+<% end %>
+
+<% else %>
+  <div>You need to set up the temparatures first...</div>
+  <%= link_to "Set the temperature", new_temperature_path %>
+<% end %>
